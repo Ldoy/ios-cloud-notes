@@ -6,16 +6,22 @@
 //
 
 import UIKit
+import CoreData
 
 class SplitViewController: UISplitViewController {
     private let detailVC = SecondaryViewController()
     private let primaryVC = PrimaryViewController()
     private let splitViewDelegate = SplitViewDelegate()
-    
+    var container: NSPersistentContainer!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         decideSpliveVCPreferences()
         self.delegate = splitViewDelegate
+        
+        guard container != nil else {
+            fatalError("This view needs a persistent container.")
+        }
     }
 }
 
