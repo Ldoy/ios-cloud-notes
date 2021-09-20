@@ -36,10 +36,10 @@ extension MainTableViewCell {
     private func setupTitleLabelLayout() {
         titleLabel = UILabel()
         contentView.addSubview(titleLabel)
-        titleLabel.setPosition(top: nil,
-                               bottom: nil,
-                               leading: safeAreaLayoutGuide.leadingAnchor,
-                               leadingConstant: 10,
+        
+        titleLabel.setPosition(top: contentView.topAnchor,
+                               bottom: contentView.bottomAnchor, bottomConstant: -20,
+                               leading: contentView.leadingAnchor,
                                trailing: contentView.trailingAnchor)
     }
     
@@ -47,16 +47,17 @@ extension MainTableViewCell {
         dateLabel = UILabel()
         bodyLabel = UILabel()
         dateAndBodyStackView = UIStackView(arrangedSubviews: [self.dateLabel, self.bodyLabel])
-        dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        
+        bodyLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         contentView.addSubview(dateAndBodyStackView)
-        dateAndBodyStackView.setPosition(top: titleLabel.bottomAnchor,
+        let height = 30
+        dateAndBodyStackView.setPosition(top: contentView.topAnchor, topConstant: CGFloat(height),
                                          bottom: contentView.bottomAnchor,
-                                         leading: titleLabel.leadingAnchor,
+                                         leading: contentView.leadingAnchor,
                                          trailing: contentView.trailingAnchor)
         dateAndBodyStackView.axis = .horizontal
         dateAndBodyStackView.distribution = .equalCentering
         dateAndBodyStackView.spacing = 40
+        dateAndBodyStackView.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor)
     }
     
     private func setLabelStyle() {

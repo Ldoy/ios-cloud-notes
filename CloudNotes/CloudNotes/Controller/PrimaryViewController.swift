@@ -30,6 +30,7 @@ class PrimaryViewController: UIViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.frame = view.bounds
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
     }
 }
 
