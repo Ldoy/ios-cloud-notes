@@ -32,7 +32,7 @@ extension MemoListViewController: UITableViewDelegate {
     //MARK: - Transfer Data to MemoDetailVC
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.giveDataToDetailViewController(indexPath, tableView)
-        deselectCurrentCell(tableView)
+        self.tableView.deselectRow(at: indexPath, animated: true)
         self.splitViewController?.show(.secondary)
     }
     
@@ -43,13 +43,7 @@ extension MemoListViewController: UITableViewDelegate {
         let tableViewIndexPathHolder = TextViewRelatedDataHolder(indexPath: indexPath, tableView: tableView, textViewText: transferedText)
         detialViewController?.configure(tableViewIndexPathHolder)
     }
-    
-    private func deselectCurrentCell(_ tableView: UITableView) {
-        if let selectedRow = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedRow, animated: true)
-        }
-    }
-    
+
     //MARK: - Options after cell swipping
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actions = [
@@ -96,7 +90,6 @@ extension MemoListViewController {
     
     //MARK: - Called after tab addButton
     @objc func didTabAddButton() {
-        //let todayDate = Date().makeCurrentDateInt64Data()
         let newMemo = Memo(context: self.context)
         newMemo.lastModifiedDate = Date(timeIntervalSince1970: Date().timeIntervalSince1970)
         newMemo.title = " "
