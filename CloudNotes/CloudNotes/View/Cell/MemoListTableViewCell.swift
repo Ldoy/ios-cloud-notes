@@ -42,7 +42,8 @@ extension MemoListTableViewCell {
                          bottom: contentView.bottomAnchor, bottomConstant: -20,
                          leading: safeAreaLayoutGuide.leadingAnchor,
                          leadingConstant: 10,
-                         trailing: contentView.trailingAnchor)
+                         trailing: contentView.trailingAnchor
+            )
         
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
@@ -53,10 +54,13 @@ extension MemoListTableViewCell {
         self.dateLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         self.contentView.addSubview(dateAndBodyStackView)
-        self.dateAndBodyStackView.setPosition(top: titleLabel.bottomAnchor,
-                                              bottom: contentView.bottomAnchor,
-                                              leading: titleLabel.leadingAnchor,
-                                              trailing: contentView.trailingAnchor)
+        self.dateAndBodyStackView
+            .setPosition(top: titleLabel.bottomAnchor,
+                         bottom: contentView.bottomAnchor,
+                         leading: titleLabel.leadingAnchor,
+                         trailing: contentView.trailingAnchor
+            )
+        
         self.dateAndBodyStackView.axis = .horizontal
         self.dateAndBodyStackView.distribution = .equalCentering
         self.dateAndBodyStackView.spacing = 40
