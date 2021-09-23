@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class MemoListTableViewDataSource: NSObject, UITableViewDataSource {
+final class TableViewDataSource: NSObject, UITableViewDataSource {
     static let identifier = "cell"
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MemoDataManager.memos.count
+        return CoreDataManager.shared.memos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -19,8 +19,8 @@ final class MemoListTableViewDataSource: NSObject, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let list = MemoDataManager.memos[indexPath.row]
-        let cellContent = CellContentDataHolder(title: list.title, date: list.lastModifiedDate ?? Date(), body: list.body)
+        let memo = CoreDataManager.shared.memos[indexPath.row]
+        let cellContent = CellContentDataHolder(title: memo.title ?? "", date: memo.lastModifiedDate ?? Date(), body: memo.body ?? "")
         cell.configure(cellContent)
         
         return cell

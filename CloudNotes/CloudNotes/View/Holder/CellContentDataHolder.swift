@@ -8,11 +8,11 @@
 import Foundation
 
 final class CellContentDataHolder {
-    let titleLabelText: String?
+    let titleLabelText: String
     let dateLabelText: String
-    let bodyLabelText: String?
+    let bodyLabelText: String
     
-    init(title: String?, date: Date, body: String?) {
+    init(title: String, date: Date, body: String) {
         let modifiedDate =  DateFormatter().updateLastModifiedDate(date)
         self.dateLabelText = "\(modifiedDate)"
         self.titleLabelText = title

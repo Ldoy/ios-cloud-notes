@@ -17,14 +17,14 @@ protocol CoreDataAccessible {
 
 extension CoreDataAccessible {
     func fetchCoreDataItems(_ context: NSManagedObjectContext, _ tableview: UITableView) {
-        do {
-            MemoDataManager.memos = try context.fetch(Memo.fetchRequest())
-            DispatchQueue.main.async {
-                tableview.reloadData()
-            }
-        } catch {
-            print(CoreDataError.fetchError.localizedDescription)
-        }
+//        do {
+//            CoreDataManager.memos = try context.fetch(Memo.fetchRequest())
+//            DispatchQueue.main.async {
+//                tableview.reloadData()
+//            }
+//        } catch {
+//            print(CoreDataError.fetchError.localizedDescription)
+//        }
     }
     
     func saveCoreData(_ context: NSManagedObjectContext) {

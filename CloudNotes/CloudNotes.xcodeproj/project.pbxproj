@@ -12,7 +12,7 @@
 		A830336226DE100A00EA30DC /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = A830336126DE100A00EA30DC /* .swiftlint.yml */; };
 		A830336D26DF972100EA30DC /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A830336C26DF972100EA30DC /* JSONParser.swift */; };
 		A830336F26DF976500EA30DC /* MemoDecodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A830336E26DF976500EA30DC /* MemoDecodeModel.swift */; };
-		A83033C426E1146F00EA30DC /* MemoListTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83033C326E1146F00EA30DC /* MemoListTableViewDataSource.swift */; };
+		A83033C426E1146F00EA30DC /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83033C326E1146F00EA30DC /* TableViewDataSource.swift */; };
 		A83033CD26E1240100EA30DC /* MemoListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83033CC26E1240100EA30DC /* MemoListTableViewCell.swift */; };
 		A83033D026E1256300EA30DC /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83033CF26E1256300EA30DC /* UIView.swift */; };
 		A8480C1B26F9743200286B37 /* CloudNotes_v2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A8480C1A26F9743200286B37 /* CloudNotes_v2.xcmappingmodel */; };
@@ -25,7 +25,7 @@
 		A85B476D26E4D9000070417B /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85B476C26E4D9000070417B /* SplitViewController.swift */; };
 		A85B477126E628760070417B /* CellContentDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85B477026E628760070417B /* CellContentDataHolder.swift */; };
 		A872EFC026ECBB2F00D2E499 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A872EFBF26ECBB2F00D2E499 /* CoreDataError.swift */; };
-		A872EFC426ECD82300D2E499 /* MemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A872EFC326ECD82300D2E499 /* MemoDataManager.swift */; };
+		A872EFC426ECD82300D2E499 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A872EFC326ECD82300D2E499 /* CoreDataManager.swift */; };
 		C7481C6E25BBCF3900B9CA55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7481C6D25BBCF3900B9CA55 /* AppDelegate.swift */; };
 		C7481C7025BBCF3900B9CA55 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7481C6F25BBCF3900B9CA55 /* SceneDelegate.swift */; };
 		C7481C7225BBCF3900B9CA55 /* MemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7481C7125BBCF3900B9CA55 /* MemoListViewController.swift */; };
@@ -59,7 +59,7 @@
 		A830336126DE100A00EA30DC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		A830336C26DF972100EA30DC /* JSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		A830336E26DF976500EA30DC /* MemoDecodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoDecodeModel.swift; sourceTree = "<group>"; };
-		A83033C326E1146F00EA30DC /* MemoListTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListTableViewDataSource.swift; sourceTree = "<group>"; };
+		A83033C326E1146F00EA30DC /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		A83033CC26E1240100EA30DC /* MemoListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListTableViewCell.swift; sourceTree = "<group>"; };
 		A83033CF26E1256300EA30DC /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A8480C1926F973B800286B37 /* CloudNotes_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CloudNotes_v2.xcdatamodel; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		A85B476C26E4D9000070417B /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		A85B477026E628760070417B /* CellContentDataHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellContentDataHolder.swift; sourceTree = "<group>"; };
 		A872EFBF26ECBB2F00D2E499 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
-		A872EFC326ECD82300D2E499 /* MemoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoDataManager.swift; sourceTree = "<group>"; };
+		A872EFC326ECD82300D2E499 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		C7481C6A25BBCF3900B9CA55 /* CloudNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7481C6D25BBCF3900B9CA55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7481C6F25BBCF3900B9CA55 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,7 +118,6 @@
 		A82B6F5B26EB4AB200ED0070 /* Holder */ = {
 			isa = PBXGroup;
 			children = (
-				A82B6F5726EA215400ED0070 /* TextViewRelatedDataHolder.swift */,
 				A85B477026E628760070417B /* CellContentDataHolder.swift */,
 			);
 			path = Holder;
@@ -130,6 +129,8 @@
 				A854899E26F0B10D001BF187 /* Extension */,
 				A8588C2226E7268D00F61A73 /* Cell */,
 				C7481C7B25BBCF3A00B9CA55 /* LaunchScreen.storyboard */,
+				A82B6F5B26EB4AB200ED0070 /* Holder */,
+				A83033C626E11CE400EA30DC /* Data */,
 				A830336826DF92B100EA30DC /* Controller */,
 			);
 			path = View;
@@ -148,11 +149,9 @@
 		A830336926DF92B700EA30DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A854899C26F03851001BF187 /* Protocol */,
 				A872EFBE26ECBB2300D2E499 /* Error */,
 				A83033C926E11DAA00EA30DC /* PlaceHolder */,
 				A83033CE26E1254600EA30DC /* Extension */,
-				A82B6F5B26EB4AB200ED0070 /* Holder */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -176,8 +175,8 @@
 		A83033C626E11CE400EA30DC /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				A83033C326E1146F00EA30DC /* MemoListTableViewDataSource.swift */,
-				A872EFC326ECD82300D2E499 /* MemoDataManager.swift */,
+				A83033C326E1146F00EA30DC /* TableViewDataSource.swift */,
+				A872EFC326ECD82300D2E499 /* CoreDataManager.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -210,6 +209,8 @@
 		A854899D26F06EF0001BF187 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
+				A854899C26F03851001BF187 /* Protocol */,
+				A82B6F5726EA215400ED0070 /* TextViewRelatedDataHolder.swift */,
 				A830336E26DF976500EA30DC /* MemoDecodeModel.swift */,
 				A830336C26DF972100EA30DC /* JSONParser.swift */,
 			);
@@ -270,7 +271,6 @@
 				A854899D26F06EF0001BF187 /* Legacy */,
 				A830336A26DF92C500EA30DC /* AppLifeCycle */,
 				A830336926DF92B700EA30DC /* Model */,
-				A83033C626E11CE400EA30DC /* Data */,
 				A830336726DF929A00EA30DC /* View */,
 				C7481C7925BBCF3A00B9CA55 /* Assets.xcassets */,
 				C7481C7E25BBCF3A00B9CA55 /* Info.plist */,
@@ -468,9 +468,9 @@
 				A85B477126E628760070417B /* CellContentDataHolder.swift in Sources */,
 				C7481C6E25BBCF3900B9CA55 /* AppDelegate.swift in Sources */,
 				A85489A226F0ECD8001BF187 /* String.swift in Sources */,
-				A83033C426E1146F00EA30DC /* MemoListTableViewDataSource.swift in Sources */,
+				A83033C426E1146F00EA30DC /* TableViewDataSource.swift in Sources */,
 				A85B476D26E4D9000070417B /* SplitViewController.swift in Sources */,
-				A872EFC426ECD82300D2E499 /* MemoDataManager.swift in Sources */,
+				A872EFC426ECD82300D2E499 /* CoreDataManager.swift in Sources */,
 				A830336F26DF976500EA30DC /* MemoDecodeModel.swift in Sources */,
 				A854899B26F03844001BF187 /* CoreDataAccessible.swift in Sources */,
 				C7481C7025BBCF3900B9CA55 /* SceneDelegate.swift in Sources */,
