@@ -31,17 +31,17 @@ final class MemoListViewController: UIViewController, CoreDataAccessible {
 extension MemoListViewController: UITableViewDelegate {
     //MARK: - Transfer Data to MemoDetailVC
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.giveDataToSecondaryVC(indexPath, tableView)
+        self.giveDataToDetailViewController(indexPath, tableView)
         deselectCurrentCell(tableView)
         self.splitViewController?.show(.secondary)
     }
     
-    private func giveDataToSecondaryVC(_ indexPath: IndexPath, _ tableView: UITableView) {
-        let secondVC = splitViewController?.viewController(for: .secondary) as? MemoDetailViewController
+    private func giveDataToDetailViewController(_ indexPath: IndexPath, _ tableView: UITableView) {
+        let detialViewController = splitViewController?.viewController(for: .secondary) as? MemoDetailViewController
         
         let transferedText = "\(self.memos[indexPath.row].title ?? "")" + "\(self.memos[indexPath.row].body ?? "")"
         let tableViewIndexPathHolder = TextViewRelatedDataHolder(indexPath: indexPath, tableView: tableView, textViewText: transferedText)
-        secondVC?.configure(tableViewIndexPathHolder)
+        detialViewController?.configure(tableViewIndexPathHolder)
     }
     
     private func deselectCurrentCell(_ tableView: UITableView) {
@@ -64,9 +64,9 @@ extension MemoListViewController: UITableViewDelegate {
                     self.deleteSaveFetchData(self.context, memoToRemove, tableView)
                     self.memos.remove(at: indexPath.row)
                     
-                    let secondVC = self.splitViewController?.viewController(for: .secondary) as? MemoDetailViewController
+                    let detailViewController = self.splitViewController?.viewController(for: .secondary) as? MemoDetailViewController
                     let holder = TextViewRelatedDataHolder(indexPath: indexPath, tableView: tableView, textViewText: nil)
-                    secondVC?.configure(holder)
+                    detailViewController?.configure(holder)
                 }),
             UIContextualAction(
                 style: .normal,
@@ -104,7 +104,7 @@ extension MemoListViewController {
         self.memos.append(newMemo)
         self.saveCoreData(context)
         
-        guard let secondVC = self.splitViewController?.viewController(for: .secondary) as? MemoDetailViewController else {
+        guard let detailViewController = self.splitViewController?.viewController(for: .secondary) as? MemoDetailViewController else {
             return
         }
         
@@ -114,7 +114,7 @@ extension MemoListViewController {
         
         //MARK: Give Data to MemoDetailVC
         let emptyHolder = TextViewRelatedDataHolder(indexPath: newIndexPath, tableView: tableView, textViewText: nil)
-        secondVC.configure(emptyHolder)
+        detailViewController.configure(emptyHolder)
         
         self.fetchCoreDataItems(context, tableView)
         self.splitViewController?.show(.secondary)

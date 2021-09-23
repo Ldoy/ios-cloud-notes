@@ -8,8 +8,8 @@
 import UIKit
 
 final class SplitViewController: UISplitViewController {
-    private let detailVC = MemoDetailViewController()
-    private let primaryVC = MemoListViewController()
+    private let detailViewController = MemoDetailViewController()
+    private let primaryViewController = MemoListViewController()
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ extension SplitViewController {
     private func decideSpliveVCPreferences() {
         self.preferredDisplayMode = .oneBesideSecondary
         self.preferredSplitBehavior = .displace
-        self.setViewController(primaryVC, for: .primary)
-        self.setViewController(detailVC, for: .secondary)
+        self.setViewController(primaryViewController, for: .primary)
+        self.setViewController(detailViewController, for: .secondary)
     }
 }

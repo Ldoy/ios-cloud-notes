@@ -19,7 +19,7 @@ final class MemoDetailViewController: UIViewController, CoreDataAccessible {
         self.view.addSubview(textView)
         self.textView.delegate = self
         self.setTextViewStyle()
-        self.setSecondaryVCNavigationBar()
+        self.setMemoDetailViewControllerNavigationBar()
     }
     
     override func viewWillLayoutSubviews() {
@@ -33,7 +33,6 @@ final class MemoDetailViewController: UIViewController, CoreDataAccessible {
 
 extension MemoDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        //let today = Date().makeCurrentDateInt64Data()
         let current = Date().timeIntervalSince1970
         let today = Date(timeIntervalSince1970: current)
         guard let currentIndexPath = holder?.indexPath,
@@ -76,7 +75,7 @@ extension MemoDetailViewController {
         self.textView.font = UIFont.preferredFont(forTextStyle: .body)
     }
     
-    private func setSecondaryVCNavigationBar() {
+    private func setMemoDetailViewControllerNavigationBar() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(didTapSeeMoreButton))
     }
     
