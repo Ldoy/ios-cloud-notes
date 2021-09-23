@@ -12,7 +12,7 @@ final class MemoDetailViewController: UIViewController {
     private lazy var textView = UITextView()
     private var memoIndex: Int = .zero
     private let placeHolder = ""
-
+    
     func presentMemo(_ memo: Memo, _ location: Int) {
         let title = memo.title ?? placeHolder
         let body = memo.body ?? placeHolder
@@ -60,7 +60,7 @@ extension MemoDetailViewController {
     
     @objc func didTapSeeMoreButton() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let deleteActions = UIAlertAction(title: SelectOptions.delete.literal, style: .destructive, handler: { [self] action in
+        let deleteActions = UIAlertAction(title: SelectOptions.delete.message, style: .destructive, handler: { [self] action in
             let deletAlert = UIAlertController(title: "진짜요?",
                                                message: "정말로 삭제하시겠어요?",
                                                preferredStyle: .alert)
@@ -80,10 +80,10 @@ extension MemoDetailViewController {
             self.present(deletAlert, animated: true, completion: nil)
         })
         
-        let shareAction = UIAlertAction(title: SelectOptions.share.literal, style: .default, handler: { action in
+        let shareAction = UIAlertAction(title: SelectOptions.share.message, style: .default, handler: { action in
         })
         
-        let cancleAction = UIAlertAction(title: SelectOptions.cancle.literal, style: .cancel, handler: { action in
+        let cancleAction = UIAlertAction(title: SelectOptions.cancle.message, style: .cancel, handler: { action in
         })
         
         alert.addAction(shareAction)

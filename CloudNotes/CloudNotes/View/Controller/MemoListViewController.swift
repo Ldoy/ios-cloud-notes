@@ -40,25 +40,26 @@ extension MemoListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let actions = [
-            UIContextualAction(
-                style: .destructive,
-                title: SelectOptions.delete.literal,
-                handler: { [self] _, _, _ in
-                    if let splitViewController = self.splitViewController as? SplitViewController {
-                        // 여기 삭제됨
-                        splitViewController.delete(indexPath.row)
-                    }
-                }),
-            UIContextualAction(
-                style: .normal,
-                title: SelectOptions.share.literal,
-                handler: { action, view, completionHandler in
-                    print("share action구현하기 ")
-                })
-        ]
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: SelectOptions.delete.message,
+            handler: { [self] _, _, _ in
+                if let splitViewController = self.splitViewController as? SplitViewController {
+                    let deletedMemoIndex = indexPath.row
+                    splitViewController.delete(deletedMemoIndex)
+                }
+            })
         
-        return UISwipeActionsConfiguration(actions: actions)
+        let shareAction = UIContextualAction(
+            style: .normal,
+            title: SelectOptions.share.message,
+            handler: { action, view, completionHandler in
+                print("share action구현하기 ")
+            })
+        
+        let swipeActions = [deleteAction, shareAction]
+        
+        return UISwipeActionsConfiguration(actions: swipeActions)
     }
 }
 

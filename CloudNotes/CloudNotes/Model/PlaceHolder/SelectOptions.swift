@@ -13,7 +13,7 @@ enum SelectOptions {
     case share
     case cancle
     
-    var literal: String {
+    var message: String {
         switch self {
         case .delete:
             return "Delete"
