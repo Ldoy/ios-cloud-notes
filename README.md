@@ -1,3 +1,4 @@
+# 리드미 - 수정중
 ## 구현 기능 및 코드 
 
 ### Implement UI Element Programmatically 
@@ -115,6 +116,9 @@ extension UIView {
 </div>
 </details>
 
+<details>
+<summary>리팩토링 전</summary>
+<div markdown="1">  
 - `MemoDataManager`라는 타입을 만들어서 model object Context 를 배열로 관리하도록 하였다.  
     ```swift
     //MemoDataManager.swift
@@ -180,6 +184,8 @@ extension UIView {
         }
     }
     ```
+</div>
+</details>
 
 
 ### Accessibility
