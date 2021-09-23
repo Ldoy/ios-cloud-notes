@@ -15,14 +15,7 @@ final class MemoListViewController: UIViewController, CoreDataAccessible {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //MARK: TableView property and Method
-        self.view.addSubview(tableView)
-        self.tableView.register(MemoListTableViewCell.self, forCellReuseIdentifier: MemoListTableViewCell.identifier)
-        self.tableView.dataSource = tableViewDataSource
-        self.tableView.delegate = self
-        
-        //MARK: NavigationBar Style Setting
+        self.setTableViewPropertyAndMethod()
         self.setNavigationBarItem()
     }
     
@@ -88,11 +81,17 @@ extension MemoListViewController: UITableViewDelegate {
 }
 
 extension MemoListViewController {
-    //MARK:- NavigationBar related method
     private func setNavigationBarItem() {
         let navigationBarTitle = "메모"
         self.title = navigationBarTitle
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTabAddButton))
+    }
+    
+    private func setTableViewPropertyAndMethod() {
+        self.view.addSubview(tableView)
+        self.tableView.register(MemoListTableViewCell.self, forCellReuseIdentifier: MemoListTableViewCell.identifier)
+        self.tableView.dataSource = tableViewDataSource
+        self.tableView.delegate = self
     }
     
     //MARK: - Called after tab addButton
