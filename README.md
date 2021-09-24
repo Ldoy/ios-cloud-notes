@@ -6,11 +6,10 @@
     + [1. 데이터 전달과정에 참여하는 객체의 Decoupling](#1-데이터-전달과정에-참여하는-객체의-decoupling)
     + [2. cell 스택뷰의 경고창](#2-cell-스택뷰의-경고창)
     + [3. 다이나믹 타입을 적용해서 글자크기를 증가했을 때 cell의 레이아웃이 깨지는 현상](#3-다이나믹-타입을-적용해서-글자크기를-증가했을-때-cell의-레이아웃이-깨지는-현상)
-    + [4. StackView의 `leadingAnchor` 에 관하여](#4-stackview의--leadinganchor--에-관하여)
-    + [5. 회전하면 테이블뷰의 일부가 잘 보이지 않는다](#5-회전하면-테이블뷰의-일부가-잘-보이지-않는다)
+    + [4. StackView의 leadingAnchor에 관하여](#4-stackview의-leadinganchor에-관하여)
+    + [5. 회전하면 테이블뷰의 width가 줄어드는 문제](#5-회전하면-테이블뷰의-width가-줄어드는-문제)
 - [고민한 부분](#고민한-부분)
 - [아쉬운 부분](#아쉬운-부분)
-
 
 # 📝 동기화 메모장  
 1. 개인프로젝트로 진행
@@ -743,7 +742,7 @@
 #### 상황 : 기기를 회전할 때 스택뷰의 레이아웃 경고가 생기고 바디를 입력할 때마다 레이아웃이 변경됨 
 | 경고 메세지  | Debugging Consol |
 | -------- | -------- |
-![](https://i.imgur.com/OW7LZHk.png)| ![](https://i.imgur.com/cTVFlHu.png)| 
+<img src = "https://i.imgur.com/OW7LZHk.png" width = 400, height = 200>| <img src = "https://i.imgur.com/cTVFlHu.png" width = 300, height = 300>| 
 **textView에서 body에 해당하는 부분 입력 시 왼쪽 테이블뷰 cell의 레이아웃이 변경**
 ![](https://i.imgur.com/N9AnYrh.gif) |
 
@@ -773,7 +772,7 @@
     
 ### 3. 다이나믹 타입을 적용해서 글자크기를 증가했을 때 cell의 레이아웃이 깨지는 현상
  - #### 상황 : Textview에는 잘 적용이 되는데 cell에는 잘 적용이 안됨
-![](https://i.imgur.com/s8qGglW.gif)
+    <img src = "https://i.imgur.com/s8qGglW.gif" width = 300>
 
 - `시도1`. cell의 높이가 dynamic하게 resizing 되지 않아 겹치는 것일 수 있기 때문에 ` PrimaryViewController`에 아래 코드 추가 
 -> 변화없음 
@@ -796,7 +795,9 @@
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
      ```
-     ![](https://i.imgur.com/bV4f2iX.gif)
+     - 결과
+     <img src = "https://i.imgur.com/bV4f2iX.gif" width = 300>
+
 
 - `결론`
     - 객체와 객체사이의 수직 간격이 이전에는 없었기 때문에 간격을 넓힘으로서 위 아래 레이블이 완전히 겹치는 문제는 해결되었다. 
@@ -809,12 +810,12 @@
 - 지금처럼 간격을 지정하는 방법이 아닌 사이즈에 따라 알아서 높이가 지정되도록 하는 방법은 무엇이 있을까?
 
     <br>
-### 4. StackView의 `leadingAnchor` 에 관하여
+### 4. StackView의 leadingAnchor에 관하여
 - #### 상황 : 아래처럼 leadingAnchor를 safeAreaLayoutGuide의  leadingAnchor로 변경했더니 잘 구현됨
 
     | 코드 수정 전| 코드 수정 후|
     | -------- | -------- |
-    | <img src = "https://i.imgur.com/pJCXMqq.png" height = 500, width = 600 >     | <img src = "https://i.imgur.com/zNlmOqg.png" height = 500, width = 600 >     |
+    | <img src = "https://i.imgur.com/pJCXMqq.png" height = 400, width = 500 >     | <img src = "https://i.imgur.com/zNlmOqg.png" height = 400, width = 500 >     |
 
  
     - 수정전 코드
@@ -858,9 +859,9 @@
     dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     ```
     <br>
-### 5. 회전하면 테이블뷰의 일부가 잘 보이지 않는다
+### 5. 회전하면 테이블뷰의 width가 줄어드는 문제 
 - iPad pro / iphone11 에서의 모습 
-    | ![](https://i.imgur.com/Rpjw2lu.gif) | ![](https://i.imgur.com/rnXpAv5.gif) | 
+    | <img src = "https://i.imgur.com/Rpjw2lu.gif" width = 200, height = 300> | <img src = "https://i.imgur.com/rnXpAv5.gif" height = 300> | 
     | -------- | -------- |
 - `시도1` :  `cellLayoutMarginsFollowReadableWidth` 를 true로 설정해서 그런것이라고 판단하고 원래의 default 로 변경 -> 변화없음 
 
@@ -878,12 +879,13 @@
      - 결과
     <img src = "https://i.imgur.com/2jEswTY.gif" height = 200>
     
-- `시도3` : tableView의 레이아웃이 잘못되었다고 판단하고 다시 tableView의 레이아웃을 리팩토링 -> 테이블뷰가 전체 화면을 다 채움 
+- `시도3` : 테이블뷰가 전체 화면을 다 채우도록 구현
     ```swift
     tableView.frame = view.bounds
     ```
-- `결론` : tableView의 레이아웃이 잘 잡히지 않아 생겼던 문제. `cellLayoutMarginsFollowReadableWidth` 속성은 custom cell에선 영향이 없다. 
-                
+- `결론` : tableView의 레이아웃이 잘 잡히지 않아 생겼던 문제. 시도2, 시도3의 방법으로 구현하니 정상적으로 잘 나왔다. `cellLayoutMarginsFollowReadableWidth` 속성은 custom cell에선 영향이 없다. 
+
+<br>
                 
 # 고민한 부분 
 [1. cell에게 정보를 전달하는 방법](#1-cell에게-정보를-전달하는-방법)<br>
@@ -891,9 +893,9 @@
 [3. ViewController의 역할 최대한 분리하는 방법](#3-viewcontroller의-역할-최대한-분리하는-방법)<br>
 [4. 코어데이터 저장소는 어떤 객체가 가지고 있어야 할까](#4-코어데이터-저장소는-어떤-객체가-가지고-있어야-할까)<br>
 [5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까](#5-textview에서-제목과-본문을-나눠야-하는데-어떻게-나눌-수-있을까)<br>
-[6. 코어데이터의 entity, attribute의 구성](#6-코어데이터의-entity--attribute의-구성)<br>
+[6. 코어데이터의 entity, attribute의 구성](#6-코어데이터의-entity-attribute의-구성)<br>
 [7. MVC모델에 기반한 grouping](#7-mvc모델에-기반한-grouping)<br>
-[8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까](#8-lazy키워드--closure-를-이용해-ui요소를-초기화-하면-좋은-부분은-어디일까)<br>
+[8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까](#8-lazy키워드-closure-를-이용해-ui요소를-초기화-하면-좋은-부분은-어디일까)<br>
 [9. `CellId`열거형](9--cellid-열거형)
 
 <br>
@@ -1055,8 +1057,11 @@ private lazy var tableView = UITableView()
 
 
 <br>
+
 # 학습내용
 - 3주간 배운 내용을 정리해 보았다. [노션 링크](https://www.notion.so/_-f68835bfaf6d4277971d01ceb2142166)
+
+<br><br>
 
 # 아쉬운 부분 
 1. 코어데이터의 에러처리 
