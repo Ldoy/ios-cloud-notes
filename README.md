@@ -845,3 +845,184 @@
     tableView.frame = view.bounds
     ```
 - `결론` : tableView의 레이아웃이 잘 잡히지 않아 생겼던 문제. `cellLayoutMarginsFollowReadableWidth` 속성은 custom cell에선 영향이 없다. 
+                
+                
+# 고민한 부분 
+
+#### 1. cell에게 정보를 전달하는 방법 
+- 아래와 같이 Holder에 담아서 전달한다. 
+    - 이유 : Holder내부에서 데이터 가공 할 수 있으며 이 역할을 Holder에게 부여하므로서 각 객체의 역할을 확실히 구분할 수 있기 때문이다. 
+```swift
+final class CellContentDataHolder {
+    let titleLabelText: String
+    let dateLabelText: String
+    let bodyLabelText: String
+
+    init(title: String, date: Date, body: String) {
+        let modifiedDate =  DateFormatter().updateLastModifiedDate(date)
+        self.dateLabelText = "\(modifiedDate)"
+        self.titleLabelText = title
+        self.bodyLabelText = body
+        }
+    }
+}
+```
+<br>
+
+#### 2. 어떻게하면 성능을 좋게 할 수 있을까?
+1. class타입의 참조 기능만 사용하는 경우 `final` 키워드 추가 한다
+    - 이유 : Dynamic Dispatch가 아닌 Static Dispatch로 메서드 디스패치의 방법을 바꿀 수 있기 때문
+    - 현재 사용되는 대부분의 class타입의 객에에 final 키워드 추가 하였다. 
+
+2. 구조체 내부에 속성의 타입이 참조타입이 많은 경우 구조체가 아닌 클래스로 바꾼다. 
+    - 이유 : 구조체의 경우 copy 가 일어날 때 속성의 heat영역도 copy 되기 때문에 class로 구현했을 때보다 Reference Count 오버헤드가 발생한다. 
+    - cellDataHolder객체를 struct에서 class로 변경
+        ```swift
+        final class CellContentDataHolder {
+            let titleLabelText: String
+            let dateLabelText: String
+            let bodyLabelText: String
+
+            init(title: String, date: Date, body: String) {
+                let modifiedDate =  DateFormatter().updateLastModifiedDate(date)
+                self.dateLabelText = "\(modifiedDate)"
+                self.titleLabelText = title
+                self.bodyLabelText = body
+            }
+        }
+        ```
+        <br>
+#### 3. ViewController의 역할 최대한 분리하는 방법 
+1-1. MemoListViewController가 TableViewDataSource 역할을 하지않고 customDataSource를 따로 구현하였다.  
+- 코드 
+    ```swift
+    final class TableViewDataSource: NSObject, UITableViewDataSource {
+        static let identifier = "cell"
+
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return CoreDataManager.shared.memos.count
+        }
+
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MemoListTableViewCell.identifier, for: indexPath) as? MemoListTableViewCell else {
+                return UITableViewCell()
+            }
+
+            let memo = CoreDataManager.shared.memos[indexPath.row]
+            let cellContent = CellContentDataHolder(title: memo.title ?? "", date: memo.lastModifiedDate ?? Date(), body: memo.body ?? "")
+            cell.configure(cellContent)
+
+            return cell
+    }
+    ```
+
+- `결론` : **모든 상황에 항상 적용되는 패턴, 코드라는 것은 없다.** 
+
+- `생각의 흐름`
+    - 'MVC 패턴에서 ViewController의 역할이 무엇인가'
+    - Controller의 역할은 뷰에 내용을 주는 `presenter`의 역할을 하면서도 비지니스 로직이(`Model`) 앱의 필요 기능을 위해 배치되는 곳이라고 생각했다. 
+        - 마치 레고(Model)를 가지고 사람, 성, 마을, 나라 등(Application) 을 만들 수 있는 것 처럼 
+    - 이와 같은 이유로 ViewController가 TableView의 DataSource의 역할을 하는 것은 맞지 않다고 생각했다. 
+    - 하지만  `UIKit에서 제공해주는 delegate에 더 필요한 부분이 있거나 override해야하거나 한다면 이점` 이 있는게 아니라면 굳이 두 번 거칠 필요없이 해당 컨트롤러에 delegate역할을 부여하는 것이 오히려 더 생산적인 방향일 수 있다. 
+-  delegate, datasource등을 분리하는것을 모든 상황에 적용해야하는 법칙이 아니다. 
+<br>
+
+#### 4. 코어데이터 저장소는 어떤 객체가 가지고 있어야 할까
+- `후보`
+    - 지금은 기능 구현에 초점을 맞추고  Primary VC에 두었는데 추후 타입을 하나 만들어 들고있게 하거나 프로토콜로 만들 수 있지 않을까?
+    - 코어 데이터가지는 프로토콜 하나 만들면  container도 extension으로 구현해 두고 fetch 하는 메소드도 가직 있도록 할 수 있을 것 같다. 
+
+- `선택한 방향` : SplitVC가 MemoListVC, MemoDetailVC를 알고있기 때문에 CoreDataManager 객체를 만들어 이 객체가 데이터를 가지고 있으면서 SplitVC가 이 객체 접근하는 방식으로 최종 구현
+ <br>
+ 
+#### 5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까?
+- 아래와 같이 TextView의 text 속성을 분리하여 튜플로 반환하는 extension메소드를 사용해 보았다. 
+```swift
+extension String {
+    func seperateTitleAndBody() -> (title: String, body: String) {
+        let lineBreaker = "\n"
+        let emptyTtitle = ""
+        let bodyStartIndex = 1
+        
+        let seperateArrray = self.components(separatedBy: lineBreaker)
+        let title = seperateArrray.first ?? emptyTtitle
+        let body = seperateArrray[bodyStartIndex...].reduce("") { $0 + lineBreaker + $1 }
+        
+        return (title, body)
+    }
+}
+```
+<br>
+
+#### 6. 코어데이터의 entity, attribute의 구성
+- 메모의 title, body, date를 따로 나눠서 저장하는 방법과 통째로 저장하고 추후 필요할 때 가공해서 보여주는 방법 중 어떤것을 선택해야할까?
+- `결론`
+    - 현재는 두 방법의 차이가 크게 없을 것 같아서 구분하여 넣어주는 방법을 선택했다. 추후 프로젝트가 커지거나 프로젝트의 흐름이 바뀐다면 다시 한 번 고민해보면 좋을 것 같다.
+ 
+<br> 
+ 
+#### 7. MVC모델에 기반한 grouping
+- `Model`의 기준 : `ViewController`에서 인스턴스로 만들어지거나 메소드의 매게변수, 내부 지역변수 등으로 사용되는가
+- `View`의 기준 : 사용자에게 보여지는 UI요소와 관련되어 있는가
+- `Controller`의 기준 : `View`와 `Model`의 상호작용이 구현되어있는가
+
+    | | 
+    | -------- | 
+    | <img src = "https://i.imgur.com/RoqDKvm.png" width = 200, height = 500>|
+
+<br>
+
+#### 8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까?
+- Closure
+    - 해당 UI요소 자체의 속성을 다양하게 정해주어야 하는 경우
+    - 구체적인 속성을 초기화 할 때 정할 수 있다는 장점이 있다. 
+- lazy 키워드
+    - 해당 키워드를 붙이는 상황
+        - 사용자 interaction에 따라 생성 여부가 결정될 때
+        - 화면에 로드를 빠르게 해주고 싶을 때 
+- 프로젝트에서 사용한 부분
+```=swift
+//MemoDetailViewController
+private lazy var textView = UITextView()
+                
+//MemoListViewController
+private lazy var tableView = UITableView()
+```
+
+<br>
+
+#### 9. `CellId`열거형
+- cell identifier를 cell 타입 내부에서 private 속성으로 가지는 방법과 CellID라는 enum을 구현하는 방법 중 어떤방법이 더 코드의 가독성, SOLID 측면에서 좋을까
+- `결론` : cell identifier라는 건 결국 cell의 이름이기 때문에 cell 내부에 property로가지고 있는것이 좋을 것 같다고 생각하였다. 
+
+<br>
+# 학습내용
+- 3주간 배운 내용을 정리해 보았다. [노션 링크](https://www.notion.so/_-f68835bfaf6d4277971d01ceb2142166)
+
+# 아쉬운 부분 
+1. 코어데이터의 에러처리 
+2. `Nested Stack View` 구현하지 못했던 부분 
+3. `MemoDetailViewController`의 `textViewDidChange` 메소드에서 텍스트뷰의 `text`속성 값이 변경 될 때마다 메모를 저장하고 있는 것
+4. 메모를 저장할 때 user default 가 아닌 keychain에 저장하도록 구현하면 더 안전한 저장 방식이 될 수 있었던 점  
+
+1. 더보기 버튼 눌렀을 때 메모 삭제 후 커서가 남아있는 현상 
+2. 테이블뷰에 제목, 날짜, 본문이 잘 반영되고 있었는데 어느순간 body가 반영이 되지가 않음
+
+4. `textViewDidChange` 메소드 내부에서 메모의 생성날짜 업데이트가 항상 진행되는 부분
+
+6. 나의 태도
+- 처음 오토레이아웃 경고창이 나왔을 때 우선 화면에 잘 보이니 나중에 고쳐보자는 마음으로 넘어갔다. 하지만 아래와 같은 문제가 나중에 발생하였다. 버그엔 사소한게 없다. 해결하고 넘어가자 
+- 커밋할 때 빌드되는지 확인안하고 간것. 어느순간 커밋에만 집중했던 것 같다(그 내용이 아니라). 근데 이게 쉽게고쳐지지가 않을 것 같다. 기본적인 것이 가장 중요하니 항상 유의하도록 하자 
+- 옵셔널을 많이 쓰는 것같다... 옵셔널을 과하게 사용하면 어디서 nil인지 알수가 없다는 단점이 있다!!
+    <br><br>
+
+---
+##### 이번 프로젝트를 진행하면서 경험했던 리팩토링에 관하여 
+- 속이시원하다 
+
+
+| <리팩토링 전> |<리팩토링 후> |
+| -------- | -------- |
+| <img src = "https://i.imgur.com/k3T1rWC.png" width = 200, height = 200>     | <img src = "https://i.imgur.com/tHDy1v7.png" width = 200, height = 200>     |
+
+---
