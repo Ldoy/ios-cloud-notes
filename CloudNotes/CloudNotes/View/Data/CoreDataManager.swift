@@ -23,7 +23,7 @@ final class CoreDataManager {
         }
     }()
     
-    let context: NSManagedObjectContext = { () -> NSManagedObjectContext in
+    private let context: NSManagedObjectContext = { () -> NSManagedObjectContext in
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         }
@@ -31,7 +31,7 @@ final class CoreDataManager {
         return context
     }()
     
-    func updateMemo(content: String, location: Int, completionHandler: @escaping () -> ()) {
+    func updateMemo(content: String, location: Int, completionHandler: @escaping () -> Void) {
         let titleAndBody = content.seperateTitleAndBody()
         let title = titleAndBody.title
         let body = titleAndBody.body
