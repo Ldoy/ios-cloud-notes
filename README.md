@@ -1,6 +1,5 @@
-*# 리드미 - 수정중
 
-# 📝 동기화 메모장 리드미 
+# 📝 동기화 메모장  
 1. 개인프로젝트로 진행
 2. grounds rules
     -  스크럼 
@@ -17,9 +16,19 @@
 - `Data Transfer between ViewControllers`
 - `Singleton`
 - `Dependency Injection`
+- `Swift Performance`
 
 
 ## 구현 기능 및 코드 
+목차 
+[1. CRUD (Use Core Data)](#1-crud--use-core-data-)
+[2. Adapt LayoutTraits through SplivtViewController](#2-adapt-layouttraits-through-splivtviewcontroller)
+[3. Implement UI Element Programmatically](#3-implement-ui-element-programmatically)
+[4. Dependency Manager](#4-dependency-manager)
+[5. Accessibility](#5-accessibility)
+[6. Cell Swipe](#6-cell-swipe)
+[7. Alert](#7-alert)
+
 ### 1. CRUD (Use Core Data)
 - CRUD에 참여하는 객체와 이벤트에 따른 정보의 흐름 
     | ReadUpdate | CreateDelete |
@@ -181,6 +190,7 @@
     ```
     </div>
     </details>
+    
 
 - 리팩토링 후 코드(Trouble Shooting에 리팩토리 과정에 대해 자세히 기재하였다)
     <details>
@@ -260,8 +270,11 @@
             ```
     </div>
     </details>
+    
+<br>
 
-### 2. Split View Controller를 통해 아이폰, 아이패드의 Traits에 따른 View의  
+
+### 2. Adapt LayoutTraits through SplivtViewController 
 - 만약 아이폰, 아이패드 두가지 기기에서 동시에 제품이 사용되는 경우 중점을 두어야 하는 부분은 무엇일까? -> `Traits`, `UI/UX`
     - `Traits` : `Application`이 실행 되는 환경
         - `LayoutTraits` : SizeClass, Dynamic Type, Layout Direction
