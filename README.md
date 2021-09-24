@@ -1,3 +1,16 @@
+# 목차 
+- [📝 동기화 메모장](#----------)
+  * [키워드](#키워드)
+- [구현 기능 및 코드](#구현-기능-및-코드)
+- [Trouble Shooting](#trouble-shooting)
+    + [1. 데이터 전달과정에 참여하는 객체의 Decoupling](#1-데이터-전달과정에-참여하는-객체의-decoupling)
+    + [2. cell 스택뷰의 경고창](#2-cell-스택뷰의-경고창)
+    + [3. 다이나믹 타입을 적용해서 글자크기를 증가했을 때 cell의 레이아웃이 깨지는 현상](#3-다이나믹-타입을-적용해서-글자크기를-증가했을-때-cell의-레이아웃이-깨지는-현상)
+    + [4. StackView의 `leadingAnchor` 에 관하여](#4-stackview의--leadinganchor--에-관하여)
+    + [5. 회전하면 테이블뷰의 일부가 잘 보이지 않는다](#5-회전하면-테이블뷰의-일부가-잘-보이지-않는다)
+- [고민한 부분](#고민한-부분)
+- [아쉬운 부분](#아쉬운-부분)
+
 
 # 📝 동기화 메모장  
 1. 개인프로젝트로 진행
@@ -5,7 +18,7 @@
     -  스크럼 
 3. 커밋규칙 
 
-### 키워드 
+## 키워드 
 - `Dependency Manager`(SwiftLint, CocoaPods, SPM, 카르타고)
 - `Compact&Regular Size`
 - `SplitViewController`
@@ -18,18 +31,25 @@
 - `Dependency Injection`
 - `Swift Performance`
 
+<br>
 
 ## 구현 기능 및 코드 
-목차 
-[1. CRUD (Use Core Data)](#1-crud--use-core-data-)
-[2. Adapt LayoutTraits through SplivtViewController](#2-adapt-layouttraits-through-splivtviewcontroller)
-[3. Implement UI Element Programmatically](#3-implement-ui-element-programmatically)
-[4. Dependency Manager](#4-dependency-manager)
-[5. Accessibility](#5-accessibility)
-[6. Cell Swipe](#6-cell-swipe)
-[7. Alert](#7-alert)
 
-### 1. CRUD (Use Core Data)
+[1. CRUD (Use Core Data)](#1-crud-by-coredata) <br>
+[2. Adapt LayoutTraits through SplivtViewController](#2-adapt-layouttraits-through-splivtviewcontroller) <br>
+[3. Implement UI Element Programmatically](#3-implement-ui-element-programmatically) <br>
+[4. Dependency Manager](#4-dependency-manager) <br>
+[5. Accessibility](#5-accessibility) <br>
+[6. Cell Swipe](#6-cell-swipe) <br>
+[7. Alert](#7-alert) <br>
+
+<br>
+
+<details>
+<summary> 🌟구현기능🌟 </summary>
+<div markdown="1">       
+
+### 1. CRUD by CoreData
 - CRUD에 참여하는 객체와 이벤트에 따른 정보의 흐름 
     | ReadUpdate | CreateDelete |
     | -------- | -------- |
@@ -552,8 +572,13 @@
     }
     ```
     <br><br>
-    
+</div>
+</details>
+
+<br>
+
 # Trouble Shooting
+
 ### 1. 데이터 전달과정에 참여하는 객체의 Decoupling 
 #### 상황 1-1. ViewCtontoller간의 데이터 전달 시 MemoListVC와 MemoDetailVC사이 `직접적인` 데이터 전달이 이루어진다.
 
@@ -833,7 +858,7 @@
     dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     ```
     <br>
-### 5. 회전하면 테이블뷰의 일부가 잘 보이지 않는다. 
+### 5. 회전하면 테이블뷰의 일부가 잘 보이지 않는다
 - iPad pro / iphone11 에서의 모습 
     | ![](https://i.imgur.com/Rpjw2lu.gif) | ![](https://i.imgur.com/rnXpAv5.gif) | 
     | -------- | -------- |
@@ -861,6 +886,22 @@
                 
                 
 # 고민한 부분 
+[1. cell에게 정보를 전달하는 방법](#1-cell에게-정보를-전달하는-방법)<br>
+[2. 어떻게하면 성능을 좋게 할 수 있을까](#2-어떻게하면-성능을-좋게-할-수-있을까)<br>
+[3. ViewController의 역할 최대한 분리하는 방법](#3-viewcontroller의-역할-최대한-분리하는-방법)<br>
+[4. 코어데이터 저장소는 어떤 객체가 가지고 있어야 할까](#4-코어데이터-저장소는-어떤-객체가-가지고-있어야-할까)<br>
+[5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까](#5-textview에서-제목과-본문을-나눠야-하는데-어떻게-나눌-수-있을까)<br>
+[6. 코어데이터의 entity, attribute의 구성](#6-코어데이터의-entity--attribute의-구성)<br>
+[7. MVC모델에 기반한 grouping](#7-mvc모델에-기반한-grouping)<br>
+[8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까](#8-lazy키워드--closure-를-이용해-ui요소를-초기화-하면-좋은-부분은-어디일까)<br>
+[9. `CellId`열거형](9--cellid-열거형)
+
+<br>
+
+
+<details>
+<summary>🌟고민한 부분🌟</summary>
+<div markdown="1">       
 
 #### 1. cell에게 정보를 전달하는 방법 
 - 아래와 같이 Holder에 담아서 전달한다. 
@@ -882,7 +923,7 @@ final class CellContentDataHolder {
 ```
 <br>
 
-#### 2. 어떻게하면 성능을 좋게 할 수 있을까?
+#### 2. 어떻게하면 성능을 좋게 할 수 있을까
 1. class타입의 참조 기능만 사용하는 경우 `final` 키워드 추가 한다
     - 이유 : Dynamic Dispatch가 아닌 Static Dispatch로 메서드 디스패치의 방법을 바꿀 수 있기 때문
     - 현재 사용되는 대부분의 class타입의 객에에 final 키워드 추가 하였다. 
@@ -948,7 +989,7 @@ final class CellContentDataHolder {
 - `선택한 방향` : SplitVC가 MemoListVC, MemoDetailVC를 알고있기 때문에 CoreDataManager 객체를 만들어 이 객체가 데이터를 가지고 있으면서 SplitVC가 이 객체 접근하는 방식으로 최종 구현
  <br>
  
-#### 5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까?
+#### 5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까
 - 아래와 같이 TextView의 text 속성을 분리하여 튜플로 반환하는 extension메소드를 사용해 보았다. 
 ```swift
 extension String {
@@ -985,7 +1026,7 @@ extension String {
 
 <br>
 
-#### 8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까?
+#### 8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까
 - Closure
     - 해당 UI요소 자체의 속성을 다양하게 정해주어야 하는 경우
     - 구체적인 속성을 초기화 할 때 정할 수 있다는 장점이 있다. 
@@ -1007,6 +1048,11 @@ private lazy var tableView = UITableView()
 #### 9. `CellId`열거형
 - cell identifier를 cell 타입 내부에서 private 속성으로 가지는 방법과 CellID라는 enum을 구현하는 방법 중 어떤방법이 더 코드의 가독성, SOLID 측면에서 좋을까
 - `결론` : cell identifier라는 건 결국 cell의 이름이기 때문에 cell 내부에 property로가지고 있는것이 좋을 것 같다고 생각하였다. 
+
+
+</div>
+</details>
+
 
 <br>
 # 학습내용
