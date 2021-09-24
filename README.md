@@ -33,7 +33,10 @@ extension UIView {
 }
 ```
 
-### Use `Core Data` for `CRUD`
+### CRUD (Use Core Data)
+![]()
+<img src = "https://i.imgur.com/dY7LClZ.png" width = 400, height= 800>
+
 <details>
 <summary>코어데이터에 관하여</summary>
 <div markdown="1">       
@@ -187,6 +190,9 @@ extension UIView {
 </div>
 </details>
 
+- 리팩토링 후 코드는 TroubleShooting에 자세히 기재하였다. 
+
+
 
 ### Accessibility
 - dynamic Size를 적용할 수 있는 코드를 text를 표현하는 모든 UI요소에 구현하여 다이나믹 사이즈가 잘 적용되도록 하였다. 
@@ -221,7 +227,7 @@ extension UIView {
 - 현 프로젝트에선 `LayoutTraits`에 중심을 두었다. 
     - `SplitViewController`를 이용해서 자동으로 `autoLayout`이 적용되는 Layout Traits를 만들고자 했다
         - SplitViewController는 컨텐츠 계층을 보여주는 가장 최상위 레벨로서 2~3개의 컬럼을 가지고 있으며 상위 컬럼이 변경되는 경우 그 계층에 속한 객체들도 같이 영향을 받는다. [(SplitView H.I.G)](https://www.notion.so/yagomacademy/Step1-3f8c5dac6d254331a7009bfed5aeb32e#a64d226188de4dd58ea279d7ba0ddcad)
-    - 코드 
+    - 코드(리팩토링 전, 리팩토링 코드는 TroubleShooting에서 자세히 기재) 
     ```swift
     final class SplitViewController: UISplitViewController {
         private let detailVC = MemoDetailViewController()
@@ -315,7 +321,216 @@ extension UIView {
         }
 
         ```
- # Trouble Shooting
+### Swipe 액션
+```swift
+extension MemoListViewController: UITableViewDelegate {
+   // ....
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: SelectOptions.delete.message,
+            handler: { [self] _, _, _ in
+                if let splitViewController = self.splitViewController as? SplitViewController {
+                    let deletedMemoIndex = indexPath.row
+                    splitViewController.delete(deletedMemoIndex)
+                }
+            })
+        
+        let shareAction = UIContextualAction(
+            style: .normal,
+            title: SelectOptions.share.message,
+            handler: { action, view, completionHandler in
+                print("share action구현하기 ")
+            })
+        
+        let swipeActions = [deleteAction, shareAction]
+        
+        return UISwipeActionsConfiguration(actions: swipeActions)
+    }
+}
+
+```
+### Alert
+```swift
+extension MemoDetailViewController {   
+     @objc func didTapSeeMoreButton() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let deleteActions = UIAlertAction(title: SelectOptions.delete.message, style: .destructive, handler: { [self] action in
+        let deletAlert = UIAlertController(title: "진짜요?",
+                                               message: "정말로 삭제하시겠어요?",
+                                               preferredStyle: .alert)
+            
+            let deleteAlertConfirmAction = UIAlertAction(title: "삭제", style: .destructive) { action in
+                if let splitViewcontroller = self.splitViewController as? SplitViewController {
+                    splitViewcontroller.delete(self.memoIndex)
+                    self.memoIndex -= 1
+                    self.textView.text = ""
+                }
+            }
+            
+            let deleteAlertCancelAction = UIAlertAction(title: "취소", style: .cancel)
+            
+            deletAlert.addAction(deleteAlertCancelAction)
+            deletAlert.addAction(deleteAlertConfirmAction)
+            self.present(deletAlert, animated: true, completion: nil)
+        })
+        
+        let shareAction = UIAlertAction(title: SelectOptions.share.message, style: .default, handler: { action in
+        })
+        
+        let cancleAction = UIAlertAction(title: SelectOptions.cancle.message, style: .cancel, handler: { action in
+        })
+        
+        alert.addAction(shareAction)
+        alert.addAction(deleteActions)
+        alert.addAction(cancleAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+}
+```
+
+# Trouble Shooting
+### 1. ViewCtontoller간의 데이터 전달 시 MemoListVC와 MemoDetailVC사이 직접적인 데이터 전달이 일어나고 있으면 그 과정에서 tableView와 indexPath와 깊게 연관되는 문제
+1-1. 데이터 전달이 일어나는 상황
+- 
+
+1-1. SplitViewConroller(이하 splitVC)에서 자신이 가지고 있는 primary, secondaryViewcontroller에서 일어나는 이벤트에 대한 메세지를 받고 CoreDataManager에 접근하는 방향으로 구현하고자 했다. 
+
+```swift
+extension SplitViewController {
+    func presentMemo(location: Int) {
+        let memo = selectedMemo(location)
+        self.detailViewController.presentMemo(memo, location)
+        self.show(.secondary)
+    }
+    
+    private func selectedMemo(_ index: Int) -> Memo {
+        CoreDataManager.shared.memos[index]
+    }
+    
+    func delete(_ memo: Int) {
+        CoreDataManager.shared.deletMemo(memo) {
+            self.primaryViewController.updateTableView()
+        }
+        self.show(.primary)
+    }
+    
+    func creatNewMemo(_ location: Int) {
+        CoreDataManager.shared.createMemo {
+            self.primaryViewController.updateTableView()
+        }
+        let memo = CoreDataManager.shared.memos[location]
+        self.detailViewController.presentMemo(memo, location)
+        self.show(.secondary)
+    }
+    
+    func updateMemo(_ memo: String, _ location: Int) {
+        CoreDataManager.shared.updateMemo(content: memo, location: location) {
+            self.primaryViewController.updateTableView()
+        }
+    }
+}
+```
+
+```swift
+extension MemoListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let memoIndex = indexPath.row
+        if let splitViewController = self.splitViewController as? SplitViewController {
+            splitViewController.presentMemo(location: memoIndex)
+        }
+        self.tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+// 메모 입력 -> MemoDetialViewController가 SplitViewController에게 message전달 
+extension MemoDetailViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let changedMemo = self.textView.text ?? placeHolder
+        if let splitViewController = self.splitViewController as? SplitViewController {
+            splitViewController.updateMemo(changedMemo, self.memoIndex)
+        }
+    }
+}
+
+```
+
+1-2. 코어데이터를 Singleton 객체로 만들어서 해당 객체에서만 데이터를 관리하도록 구현하였다. 
+```swift
+final class CoreDataManager {
+    static let shared = CoreDataManager()
+    
+    private init() { }
+    
+    lazy var memos: [Memo] = { () -> [Memo] in
+        do {
+            let test = try context.fetch(Memo.fetchRequest()) as [Memo]
+            return test
+        } catch {
+            return []
+        }
+    }()
+    
+    private let context: NSManagedObjectContext = { () -> NSManagedObjectContext in
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        return context
+    }()
+    
+    func updateMemo(content: String, location: Int, completionHandler: @escaping () -> ()) {
+        let titleAndBody = content.seperateTitleAndBody()
+        let title = titleAndBody.title
+        let body = titleAndBody.body
+        let targetMemo = CoreDataManager.shared.memos[location]
+        targetMemo.title = title
+        targetMemo.body = body
+        saveCoreData()
+        fetchCoreDataItems()
+        completionHandler()
+    }
+    
+    func createMemo(completionHandler: @escaping () -> ()) {
+        let newMemo = Memo(context: CoreDataManager.shared.context)
+        newMemo.lastModifiedDate = Date(timeIntervalSince1970: Date().timeIntervalSince1970)
+        self.memos.append(newMemo)
+        self.saveCoreData()
+        self.fetchCoreDataItems()
+        completionHandler()
+    }
+    
+    func deletMemo(_ deletedMemoIndex: Int, completionHandler: @escaping () -> ()) {
+        if deletedMemoIndex < .zero {
+            return
+        }
+        let deletedMemo = self.memos[deletedMemoIndex]
+        self.context.delete(deletedMemo)
+        saveCoreData()
+        fetchCoreDataItems()
+        completionHandler()
+    }
+    
+    private func fetchCoreDataItems() {
+        do {
+            self.memos = try self.context.fetch(Memo.fetchRequest())
+        } catch {
+            print(CoreDataError.fetchError.localizedDescription)
+        }
+    }
+    
+    private func saveCoreData() {
+        do {
+            try self.context.save()
+        } catch {
+            print(CoreDataError.saveError.localizedDescription)
+        }
+    }
+}
+
+```
+ 
  
  ### 오토레이아웃
  #### cell 스택뷰의 경고창
