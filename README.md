@@ -34,8 +34,9 @@ extension UIView {
 ```
 
 ### CRUD (Use Core Data)
-![]()
-<img src = "https://i.imgur.com/dY7LClZ.png" width = 400, height= 800>
+| Read_Update | Create_Delete |
+| -------- | -------- |
+| ![](https://i.imgur.com/14qDj9j.png)| ![](https://i.imgur.com/MBuZtz4.png)|
 
 <details>
 <summary>코어데이터에 관하여</summary>
@@ -321,6 +322,89 @@ extension UIView {
         }
 
         ```
+### Dependency Manager
+
+- SPM을 이용해 SwiftLint추가하려 했으나 아직 SPM에서 지원하지 않았다. 그래서 CocoaPod으로 시도하였다. 
+- 아래는 의존성 관리 도구의 종류와 각각의 특징이다.  
+
+<details>
+<summary>의존성 관리도구</summary>
+<div markdown="1">     
+
+1. 의존성(dependency)라는 것은 외부의 독립적인 프로그램 모듈(라이브러리, 파일 혹은 여러개의 파일, 폴더, 특정작업이 가능한 패키지 등)을 의미하는 것. 그렇다면 의존성 관리도구라는 것은 이러한 것들을 관리하는 도구를 의미 
+2. Swift에선 Swift Package Manager(SPM)라는 의존성 관리도구를 제공 
+3. 의존성 관리도구를 사용하는 이유
+    i. 개발 환경에 알맞은 버전으로 의존성을 관리
+    ii. 가장 최신 것으로 일괄 업데이트 가능 
+    
+4. SPM 외의 의존성 관리도구와 특징
+    1. `Cocoa pod` 
+    - 빌드할 때마다 패키지를 같이 빌드하기 때문에 길어짐 
+    
+        **<장점>**
+
+        - 대부분의 라이브러리가 코코아팟을 지원한다 (가장 오래되어서) 
+        - 중앙화 → `Specs` 라는 레포지토리에 package를 모두 모아놓고 데이터를 제공한다. 그래서 사이트에서 검색도 가능!
+        - 의존성의 의존성까지 자동으로 관리해준다.
+        **<단점>**
+        - 클린빌드하면 다 날라감
+        - 빌드 할 때 시간이 오래걸림 → 팟 라이브러리가 같이 빌드되기 때문이다
+        - 워크스페이스를 이용
+        - 프로젝트 구성의 직접적 권한이 존재하지 않음 (내부적으로 어떻게 동작하는지 알 수 없음)
+        [출처](https://ichi.pro/ko/carthage-ttoneun-cocoapods-geuge-jilmun-ibnida-18094389656523), [출처](https://ichi.pro/ko/carthage-ttoneun-cocoapods-geuge-jilmun-ibnida-18094389656523), [출처](https://baked-corn.tistory.com/109)
+        - 팟 파일에 버전을 적지 않으면 최신버전을 가져온다
+
+    
+    **2. `carthage`**
+    - 코코아팟의 단점을 보완해서 등장, 프레임워크를 추가 
+    **<장점>**
+        - 빌드속도가 빠름, 맨 처음에 프레임워크 만들 때 빌드 이미 함
+         - 어떤 오픈소스를 쓰는지 보기 편함
+         - 버전, 종속성 관리 
+         
+        **<단점>**
+         - 새로운 패키지 쓸 때마다 프레임워크 추가해줘야함 
+     
+    **3. `mint`**
+    - ㅇ
+        **<장점>**
+        - 버전에 따라 빌드가 캐싱된다
+        - 같은 패키지라도 상황에 따라 버전 별로 사용할 수 있다
+
+        **<단점>**
+        - 내부적으로 SPM을 사용하는 의존성 관리 도구. [출처](https://yagom.net/courses/open-source-library/lessons/코코아팟-vs-카르타고-vs-스위프트-패키지-매니저-2/)
+
+    4. **`spm` :** **스위프트 패키지 매니저** 
+    - 2017년 11월에 release 
+        **<장점>**
+        - 애플이 지원한다. 👍
+        - Dynamic, Static 라이브러리를 모두 지원한다. (4.0 버전 이상)
+        - 의존성의 의존성까지 자동으로 관리해준다.
+        - 누구나 쉽게 어떤 의존성이 애플리케이션에 있는지 알 수 있다.
+        - 스위프트 언어에 **built-in** 되어있어 별다른 설치가 필요없다. (`Swift 3` 이상)
+        - 스위프트 언어에 built-in 되었기 때문에 Xcode Project 파일이 꼭 필요한 것이 아니므로 리눅스에서도 사용할 수 있다.
+        - ***Package.swift*** 파일 이외에 수행할 설정이 없다.
+        - ***Xcode***의 GUI 환경에서 관리가 가능하다 (11.0 버전 이상)
+        - 내부 코드를 확인가능하다.
+
+        **<단점>**
+        - SPM에서 지원하지 않는 라이브러리가 있어, 사용하고자 하는 라이브러리의 지원 여부 확인 필수
+        - 탈중앙화 되어있기 때문에 라이브러리를 찾는 것이 더욱 수고스러울 수 있다
+        - 해결되지 않은 버그가 많다.
+
+5. 의존성 관리 도구 비교
+
+- 빌드속도: Carthage > SPM ≥ CocoaPod
+- 지원하는 라이브러리 수 : CocoaPod > SPM, Carthage
+
+6. 의존성 관리도구와 Git을 함께 사용할 때 주의할 점은?
+- 라이브러리 설치 파일까지 Git 레포에 올라가지 않도록 주의
+- gitignore를 작성하기 전에 지워야하는 파일을 삭제하고 리모트에 반영한 뒤 gitignore를 다시 작성
+
+</div>
+</details>
+
+
 ### Swipe 액션
 ```swift
 extension MemoListViewController: UITableViewDelegate {
@@ -393,8 +477,6 @@ extension MemoDetailViewController {
 
 # Trouble Shooting
 ### 1. ViewCtontoller간의 데이터 전달 시 MemoListVC와 MemoDetailVC사이 직접적인 데이터 전달이 일어나고 있으면 그 과정에서 tableView와 indexPath와 깊게 연관되는 문제
-1-1. 데이터 전달이 일어나는 상황
-- 
 
 1-1. SplitViewConroller(이하 splitVC)에서 자신이 가지고 있는 primary, secondaryViewcontroller에서 일어나는 이벤트에 대한 메세지를 받고 CoreDataManager에 접근하는 방향으로 구현하고자 했다. 
 
@@ -530,7 +612,13 @@ final class CoreDataManager {
 }
 
 ```
- 
+
+| 리팩토링 전 | 리팩토링 후 |
+| -------- | -------- |
+| ![](https://i.imgur.com/GS7eZGY.png)    | ![](https://i.imgur.com/Sd4QE4Z.png)     |
+
+                                   
+                                   
  
  ### 오토레이아웃
  #### cell 스택뷰의 경고창
