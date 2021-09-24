@@ -56,7 +56,7 @@
 
 ### 1. CRUD by CoreData
 - CRUD에 참여하는 객체와 이벤트에 따른 정보의 흐름 
-    | ReadUpdate | CreateDelete |
+    | CreateDelete | ReadUpdate |
     | -------- | -------- |
     | ![](https://i.imgur.com/14qDj9j.png)| ![](https://i.imgur.com/MBuZtz4.png)|
 
