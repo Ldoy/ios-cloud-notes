@@ -12,10 +12,16 @@
 - [아쉬운 부분](#아쉬운-부분)
 
 # 📝 동기화 메모장  
-1. 개인프로젝트로 진행
+1. 프로젝트 기간 : 2021.08.30 - 09.17
+1. 개인프로젝트
 2. grounds rules
-    -  스크럼 
+    - 10시에 스크럼 시작 
+    - 프로젝트가 중심이 아닌 학습과 이유에 초점을 맞추기
+    - 의문점을 그냥 넘어가지 않기
 3. 커밋규칙 
+    - 브랜치 : main → 3-tacocat → step1
+    - 카르마스타일
+    - 메서드 및 타입단위로
 
 ## 키워드 
 - `Dependency Manager`(SwiftLint, CocoaPods, SPM, 카르타고)
@@ -649,6 +655,7 @@
     }
 
     ```
+<br>
 
 #### 상황 1-2. 데이터 전달 과정에서 `MemoListVC`, `MemoDetailVC`가 `tableView`, `indexPath`와 연관 및 의존관계를 형성하고 있다. 또한 CoreData를 여러 ViewController에서 접근하고 있어서 thread safe하지 않은 CoreData의 특성으로 인해 오류가 생기고 있다. 
 - 오류 메세지 
@@ -729,6 +736,9 @@
     }
 
     ```
+
+<br>
+
 #### ♦️ 리팩토링 전 후 ♦️                           
 | 리팩토링 전 | 리팩토링 후 |
 | -------- | -------- |
@@ -742,9 +752,9 @@
 #### 상황 : 기기를 회전할 때 스택뷰의 레이아웃 경고가 생기고 바디를 입력할 때마다 레이아웃이 변경됨 
 | 경고 메세지  | Debugging Consol |
 | -------- | -------- |
-<img src = "https://i.imgur.com/OW7LZHk.png" width = 400, height = 200>| <img src = "https://i.imgur.com/cTVFlHu.png" width = 300, height = 300>| 
-**textView에서 body에 해당하는 부분 입력 시 왼쪽 테이블뷰 cell의 레이아웃이 변경**
-![](https://i.imgur.com/N9AnYrh.gif) |
+<img src = "https://i.imgur.com/OW7LZHk.png" width = 200, height = 300>| <img src = "https://i.imgur.com/cTVFlHu.png" width = 200, height = 300>| 
+**textView에서 body에 해당하는 부분 입력 시 왼쪽 테이블뷰 cell의 레이아웃이 변경** 
+<img src = "https://i.imgur.com/N9AnYrh.gif" width = 200>|
 
 
 - `해결` : 스택뷰가 `topAnchor`로 가지고 있던 `titleLabel`의 `bottomAnchor`에 `nil`이 아닌 `contentView`의 anchor를 할당 
@@ -768,7 +778,7 @@
         // 밑에서 설명하겠지만 Hugging, Compression priority까지 같이 구현 하였음 
         ```
 - `결론` : cell 내부 UI요소들의 오토레이아웃이 잘 구현되지 않아서 생겼던 문제. 다양한 변화에 대응할 수 있는 autolayout을 구현해야 UI요소와 그 내부 컨텐츠들이 화면에 나타날 수 있다. 
-    <br>
+    <br><br>
     
 ### 3. 다이나믹 타입을 적용해서 글자크기를 증가했을 때 cell의 레이아웃이 깨지는 현상
  - #### 상황 : Textview에는 잘 적용이 되는데 cell에는 잘 적용이 안됨
@@ -815,7 +825,7 @@
 
     | 코드 수정 전| 코드 수정 후|
     | -------- | -------- |
-    | <img src = "https://i.imgur.com/pJCXMqq.png" height = 400, width = 500 >     | <img src = "https://i.imgur.com/zNlmOqg.png" height = 400, width = 500 >     |
+    | <img src = "https://i.imgur.com/pJCXMqq.png" height = 300>     | <img src = "https://i.imgur.com/zNlmOqg.png" height = 300>     |
 
  
     - 수정전 코드
@@ -895,7 +905,7 @@
 [5. TextView에서 제목과 본문을 나눠야 하는데 어떻게 나눌 수 있을까](#5-textview에서-제목과-본문을-나눠야-하는데-어떻게-나눌-수-있을까)<br>
 [6. 코어데이터의 entity, attribute의 구성](#6-코어데이터의-entity-attribute의-구성)<br>
 [7. MVC모델에 기반한 grouping](#7-mvc모델에-기반한-grouping)<br>
-[8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까](#8-lazy키워드-closure-를-이용해-ui요소를-초기화-하면-좋은-부분은-어디일까)<br>
+[8. lazy키워드, closure를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까](#8-lazy키워드-closure를-이용해-ui요소를-초기화-하면-좋은-부분은-어디일까)<br>
 [9. `CellId`열거형](9--cellid-열거형)
 
 <br>
@@ -1028,7 +1038,7 @@ extension String {
 
 <br>
 
-#### 8. lazy키워드, closure 를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까
+#### 8. lazy키워드, closure를 이용해 UI요소를 초기화 하면 좋은 부분은 어디일까
 - Closure
     - 해당 UI요소 자체의 속성을 다양하게 정해주어야 하는 경우
     - 구체적인 속성을 초기화 할 때 정할 수 있다는 장점이 있다. 
