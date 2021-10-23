@@ -12,16 +12,21 @@
 - [아쉬운 부분](#아쉬운-부분)
 
 # 📝 동기화 메모장  
-1. 프로젝트 기간 : 2021.08.30. - 09.17.
-1. 개인프로젝트
-2. grounds rules
+3. 프로젝트 기간 : 2021.08.30. - 09.17.
+4. 개인프로젝트
+5. grounds rules
     - 10시에 스크럼 시작 
     - 프로젝트가 중심이 아닌 학습과 이유에 초점을 맞추기
     - 의문점을 그냥 넘어가지 않기
-3. 커밋규칙 
+6. 커밋규칙 
     - 브랜치 : main → 3-tacocat → step1
     - 카르마스타일
     - 메서드 및 타입단위로
+## 앱 동작
+| |
+| -------- | 
+|![](https://i.imgur.com/lyBTRLY.gif)|    
+![](https://i.imgur.com/h0uA9qb.gif) 
 
 ## 키워드 
 - `Dependency Manager`(SwiftLint, CocoaPods, SPM, 카르타고)
